@@ -185,7 +185,7 @@ public class GUI extends JFrame implements WindowListener{
 		this.add(imageCanvas, BorderLayout.EAST);
 		
 		// load image cache if it exists
-		CacheHandler.loadCache();
+		ImageCacheHandler.loadCache();
 
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.addWindowListener(this);
@@ -305,7 +305,7 @@ public class GUI extends JFrame implements WindowListener{
 			@Override
 			protected Void doInBackground() {
 				try {
-					image = CacheHandler.getCardImage(jsonHandler.getMultiverseID(cardName));
+					image = ImageCacheHandler.getCardImage(jsonHandler.getMultiverseID(cardName));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -341,7 +341,7 @@ public class GUI extends JFrame implements WindowListener{
 			if (!cacheFolder.exists()){
 				cacheFolder.mkdirs();
 			}
-			CacheHandler.saveCache();
+			ImageCacheHandler.saveCache();
 		
 	}
 

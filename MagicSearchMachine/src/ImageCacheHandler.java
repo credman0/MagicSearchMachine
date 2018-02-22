@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-public class CacheHandler {
+public class ImageCacheHandler {
 	public static final int MAX_IMAGES = 20;
 	
 	private static HashMap<Integer, BufferedImage> imageCache = new HashMap<Integer, BufferedImage>();
