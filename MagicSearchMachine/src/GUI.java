@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -20,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -202,12 +202,12 @@ public class GUI extends JFrame implements WindowListener{
 			cardNameField.setText(selectedCardName);
 			cardManaField.setText(jsonHandler.getCardMana(selectedCardName));
 			cardTextArea.setText(jsonHandler.getCardText(selectedCardName));
-			imageCanvas.repaint();
+			imageCanvas.setImage(selectedCardName);
 		}else {
 			cardNameField.setText("");
 			cardManaField.setText("");
 			cardTextArea.setText("");
-			imageCanvas.repaint();
+			imageCanvas.setImage(selectedCardName);
 		}
 	}
 
@@ -268,8 +268,10 @@ public class GUI extends JFrame implements WindowListener{
 		}
 	}
 
-	private class ImageDisplayCanvas extends Canvas {
+	private class ImageDisplayCanvas extends JPanel {
 		private static final long serialVersionUID = 1L;
+		protected BufferedImage image;
+		protected String cardName;
 
 		private ImageDisplayCanvas() {
 			setPreferredSize(new Dimension(233, 310));
@@ -278,20 +280,44 @@ public class GUI extends JFrame implements WindowListener{
 		@Override
 		public void paint(Graphics g) {
 			setPreferredSize(new Dimension(233, 310));
-			if (selectedCardName == null) {
-				g.setColor(getBackground());
-				g.fillRect(0, 0, 233, 310);
+			if (selectedCardName == null) 
 				return;
+			
+			g.drawImage(image, 0, 0, this);
+		}
+		
+		protected ImageFetcherWorker fetcher = new ImageFetcherWorker();
+		
+		public void setImage(String cardName) {
+			this.cardName = cardName;
+			if (fetcher.isDone()) {
+				fetcher = new ImageFetcherWorker();
+				fetcher.execute();
+			}else {
+				fetcher.cancel(true);
+				fetcher = new ImageFetcherWorker();
+				fetcher.execute();
+			}
+		}
+		
+		private class ImageFetcherWorker extends SwingWorker<Void,Void>{
+
+			@Override
+			protected Void doInBackground() {
+				try {
+					image = CacheHandler.getCardImage(jsonHandler.getMultiverseID(cardName));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
 			}
 			
-			BufferedImage image = null;
-			try {
-				image = CacheHandler.getCardImage(jsonHandler.getMultiverseID(selectedCardName));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			@Override
+			protected void done() {
+				repaint();
 			}
-			g.drawImage(image, 0, 0, this);
+			
 		}
 	}
 
