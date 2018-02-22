@@ -14,9 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Vector;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -28,7 +25,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -43,14 +39,11 @@ public class GUI extends JFrame implements WindowListener{
 	private Vector<String> resultNameVector;
 	// JSONObject resultJson;
 	private JList<String> resultList;
-
-	private Vector<String> deckCardList = new Vector<String>();
+	
 	// JSONObject d
 	private JTextField cardNameField;
 	private JTextField cardManaField;
 	private JTextArea cardTextArea;
-	private JTextField cardStatsField;
-	private JTextField cardTypeArea;
 	private ImageDisplayCanvas imageCanvas;
 	private JSONHandler jsonHandler;
 
@@ -61,8 +54,6 @@ public class GUI extends JFrame implements WindowListener{
 		main.init();
 	}
 
-	
-	@SuppressWarnings("unchecked")
 	public void init() {
 		jsonHandler = new JSONHandler();
 		jsonHandler.initilizeCardJSON();
@@ -106,7 +97,7 @@ public class GUI extends JFrame implements WindowListener{
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+				if (arg0.getKeyCode() == KeyEvent.VK_DOWN || arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					resultList.requestFocusInWindow();
 					resultList.setSelectedIndex(0);
 				}
@@ -207,19 +198,28 @@ public class GUI extends JFrame implements WindowListener{
 
 	// display the information of the currently selected card
 	private void updateCardInfo() {
-		cardNameField.setText(selectedCardName);
-		cardManaField.setText(jsonHandler.getCardMana(selectedCardName));
-		cardTextArea.setText(jsonHandler.getCardText(selectedCardName));
-		imageCanvas.repaint();
+		if (selectedCardName != null) {
+			cardNameField.setText(selectedCardName);
+			cardManaField.setText(jsonHandler.getCardMana(selectedCardName));
+			cardTextArea.setText(jsonHandler.getCardText(selectedCardName));
+			imageCanvas.repaint();
+		}else {
+			cardNameField.setText("");
+			cardManaField.setText("");
+			cardTextArea.setText("");
+			imageCanvas.repaint();
+		}
 	}
 
-	SearchThread searchThread = new SearchThread();
+	private SearchThread searchThread = new SearchThread();
 	private void updateSearch() {
 		if (searchThread.isDone()) {
 			SearchThread searchThread = new SearchThread();
 			searchThread.execute();
 		}else {
 			searchThread.cancel(true);
+			SearchThread searchThread = new SearchThread();
+			searchThread.execute();
 		}
 		
 	}
@@ -243,6 +243,7 @@ public class GUI extends JFrame implements WindowListener{
 		@Override
 		public void done() {
 			resultList.updateUI();
+			updateCardInfo();
 		}
 		
 	}
@@ -276,7 +277,12 @@ public class GUI extends JFrame implements WindowListener{
 
 		@Override
 		public void paint(Graphics g) {
-			if (selectedCardName == null) return;
+			setPreferredSize(new Dimension(233, 310));
+			if (selectedCardName == null) {
+				g.setColor(getBackground());
+				g.fillRect(0, 0, 233, 310);
+				return;
+			}
 			
 			BufferedImage image = null;
 			try {
@@ -286,7 +292,6 @@ public class GUI extends JFrame implements WindowListener{
 				e.printStackTrace();
 			}
 			g.drawImage(image, 0, 0, this);
-			setPreferredSize(new Dimension(233, 310));
 		}
 	}
 
