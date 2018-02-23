@@ -17,6 +17,15 @@ public class ImageCacheHandler {
 	static int deletePointer = 0;
 	
 	public static void saveCache() {
+		File imageCacheFolder = new File("cache/");
+		
+		// clear out existing cached files
+		if (imageCacheFolder.exists()){
+			File[] caches = imageCacheFolder.listFiles();
+			for (File imageFile:caches){
+				imageFile.deleteOnExit();
+			}
+		}
 		for (Integer i : imageCache.keySet()){
 			File cacheFile = new File ("cache/"+i);
 			if (!cacheFile.exists()){
