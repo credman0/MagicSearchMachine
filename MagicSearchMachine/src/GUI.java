@@ -146,7 +146,7 @@ public class GUI extends JFrame implements WindowListener{
 		});
 
 		resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		JScrollPane outputScrollPane = new JScrollPane(resultList);
+		JScrollPane outputScrollPane = new JScrollPane(resultList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.add(outputScrollPane, BorderLayout.WEST);
 
 		// box to contain card info
@@ -280,9 +280,12 @@ public class GUI extends JFrame implements WindowListener{
 		@Override
 		public void paint(Graphics g) {
 			setPreferredSize(new Dimension(233, 310));
-			if (selectedCardName == null) 
+			if (cardName == null) 
 				return;
-			
+			if (image == null) {
+				g.setColor(getBackground());
+				g.fillRect(0, 0, 233, 310);
+			}
 			g.drawImage(image, 0, 0, this);
 		}
 		
