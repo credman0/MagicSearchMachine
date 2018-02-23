@@ -17,6 +17,7 @@ public class JSONHandler {
 	public static final String SETJSON_NAME = "AllSets-x.json";
 	private JSONObject cardJson;
 	private JSONObject setJson;
+	private QueryParser queryParser = new QueryParser();
 	
 	public void initilizeCardJSON(){
 		cardJson = loadJson(CARDJSON_NAME);
@@ -91,7 +92,7 @@ public class JSONHandler {
 
 		// iterates through all the query tokens in the command from the user
 		while (queryMatcher.find()) {
-			SearchQuery searchQuery = QueryParser.evaluate(queryMatcher.group());
+			SearchQuery searchQuery = queryParser.evaluate(queryMatcher.group());
 			queryList.add(searchQuery);
 		}
 

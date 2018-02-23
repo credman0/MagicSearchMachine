@@ -1,10 +1,48 @@
 package querys;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class QueryParser {
-	public static SearchQuery evaluate(String queryToken) {
+	private Hashtable<String, String[]> loadedFormats = new Hashtable<String, String[]>();
+	
+	public QueryParser() {
+		loadCustomFormats();
+	}
+	
+	public void loadCustomFormats() {
+		File formatFolder = new File("FormatLists");
+		File[] formatList = formatFolder.listFiles();
+		for (File file : formatList) {
+			ArrayList<String> cardList = new ArrayList<String>();
+			try {
+				Scanner scan = new Scanner(file);
+
+				while (scan.hasNextLine()) {
+					String cardName = scan.nextLine();
+					cardList.add(cardName);
+				}
+				
+				scan.close();
+				
+				String[] cardsArray = cardList.toArray(new String[cardList.size()]);
+				Arrays.sort(cardsArray);
+				// name of the format in our program excludes extension
+				loadedFormats.put(file.getName().substring(0, file.getName().length()-4), cardsArray);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public SearchQuery evaluate(String queryToken) {
 		boolean positive = true;
 		// check if the query is a negative (starts with '-')
 		if (queryToken.charAt(0) == '-') {
@@ -72,7 +110,7 @@ public class QueryParser {
 			case "o":
 				return new StringQuery("text", commandSplit[1], positive);
 			case "f":
-				return new FormatQuery(commandSplit[1], positive);
+				return new FormatQuery(commandSplit[1], positive, loadedFormats);
 			case "s":
 				return new ArrayQuery("printings",commandSplit[1], positive);
 			case "c":
