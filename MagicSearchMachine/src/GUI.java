@@ -38,7 +38,30 @@ public class GUI extends JFrame implements WindowListener{
 	private SearchField searchField;
 	private Vector<String> resultNameVector;
 	// JSONObject resultJson;
-	private JList<String> resultList;
+	private ResultJList<String> resultList;
+	private class ResultJList <T> extends JList <String> {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -519089603963979158L;
+		
+		public ResultJList(Vector<String> resultNameVector) {
+			super(resultNameVector);
+		}
+		
+		@Override
+		public String getSelectedValue() {
+			if (getSelectedIndex()>=getModel().getSize()) {
+				if (getModel().getSize()>0) {
+					setSelectedIndex(getModel().getSize()-1);
+				}else {
+					clearSelection();
+				}
+			}
+			return super.getSelectedValue();
+		}
+	}
 	
 	// JSONObject d
 	private JTextField cardNameField;
@@ -133,7 +156,7 @@ public class GUI extends JFrame implements WindowListener{
 
 		// add output field on left of field
 		resultNameVector = new Vector<String>();
-		resultList = new JList<String>(resultNameVector);
+		resultList = new ResultJList<String>(resultNameVector);
 		resultList.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -243,6 +266,7 @@ public class GUI extends JFrame implements WindowListener{
 		@Override
 		public void done() {
 			resultList.updateUI();
+			selectedCardName = resultList.getSelectedValue();
 			updateCardInfo();
 		}
 		
