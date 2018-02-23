@@ -214,11 +214,11 @@ public class GUI extends JFrame implements WindowListener{
 	private SearchThread searchThread = new SearchThread();
 	private void updateSearch() {
 		if (searchThread.isDone()) {
-			SearchThread searchThread = new SearchThread();
+			searchThread = new SearchThread();
 			searchThread.execute();
 		}else {
 			searchThread.cancel(true);
-			SearchThread searchThread = new SearchThread();
+			searchThread = new SearchThread();
 			searchThread.execute();
 		}
 		
