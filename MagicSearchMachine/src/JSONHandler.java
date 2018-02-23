@@ -14,7 +14,7 @@ import querys.SearchQuery;
 
 public class JSONHandler {
 	public static final String CARDJSON_NAME = "AllCards-x.json";
-	public static final String SETJSON_NAME = "AllSets-x.json";
+	public static final String SETJSON_NAME = "AllSets.json";
 	private JSONObject cardJson;
 	private JSONObject setJson;
 	private QueryParser queryParser = new QueryParser();
