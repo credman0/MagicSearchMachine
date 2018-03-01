@@ -37,7 +37,6 @@ public class GUI extends JFrame implements WindowListener{
 	private static final long serialVersionUID = 1L;
 	private SearchField searchField;
 	private Vector<String> resultNameVector;
-	// JSONObject resultJson;
 	private ResultJList<String> resultList;
 	private class ResultJList <T> extends JList <String> {
 

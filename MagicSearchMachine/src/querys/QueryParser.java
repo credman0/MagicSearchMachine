@@ -114,7 +114,7 @@ public class QueryParser {
 			case "s":
 				return new ArrayQuery("printings",commandSplit[1], positive);
 			case "c":
-				return new ArrayQuery("colorIdentity",commandSplit[1], positive);
+				return new ManaQuery(commandSplit[1], positive);
 
 			default:
 				System.out.println("Unknown search command: " + commandSplit[0]);

@@ -21,7 +21,7 @@ public class ArrayQuery extends SearchQuery {
 			JSONArray cardTestArray = card.getJSONArray(attribute);
 			for (int i = 0; i < cardTestArray.length(); i++){
 				if (cardTestArray.getString(i).equalsIgnoreCase(value))
-				return positive;
+					return positive;
 			}
 
 			return !positive;
