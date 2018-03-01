@@ -1,4 +1,4 @@
-package querys;
+package com.querys;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,7 +73,7 @@ public class QueryParser {
 				 * in this case there were no comparison operators - it is a
 				 * name query
 				 */
-				return new StringQuery("name", commandToken, positive);
+				return new NameQuery(commandToken, positive);
 			} else {
 				if (!commandToken.substring(comparisonMatcher.end()).matches("^(0|[1-9][0-9]*)$"))
 					return null;
@@ -81,14 +81,14 @@ public class QueryParser {
 				// note that the numberSplitMatcher has already run once above
 				switch (commandToken.substring(0, comparisonMatcher.start())) {
 				case "cmc":
-					return new NumericalQuery("cmc", Integer.parseInt(commandToken.substring(comparisonMatcher.end())),
+					return new CMCQuery(Integer.parseInt(commandToken.substring(comparisonMatcher.end())),
 							comparisonMatcher.group(), positive);
 				case "power":
-					return new NumericalQuery("power",
+					return new PowerQuery(
 							Integer.parseInt(commandToken.substring(comparisonMatcher.end())),
 							comparisonMatcher.group(), positive);
 				case "toughness":
-					return new NumericalQuery("toughness",
+					return new ToughnessQuery(
 							Integer.parseInt(commandToken.substring(comparisonMatcher.end())),
 							comparisonMatcher.group(), positive);
 				default:
@@ -106,13 +106,13 @@ public class QueryParser {
 		} else {
 			switch (commandSplit[0]) {
 			case "t":
-				return new StringQuery("type", commandSplit[1], positive);
+				return new TypeQuery(commandSplit[1], positive);
 			case "o":
-				return new StringQuery("text", commandSplit[1], positive);
+				return new TextQuery(commandSplit[1], positive);
 			case "f":
 				return new FormatQuery(commandSplit[1], positive, loadedFormats);
 			case "s":
-				return new ArrayQuery("printings",commandSplit[1], positive);
+				return new PrintingsQuery(commandSplit[1], positive);
 			case "c":
 				return new ManaQuery(commandSplit[1], positive);
 

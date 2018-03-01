@@ -1,3 +1,4 @@
+package com.core;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -30,8 +32,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.json.JSONObject;
 
 public class GUI extends JFrame implements WindowListener{
 	private static final long serialVersionUID = 1L;
@@ -78,7 +78,7 @@ public class GUI extends JFrame implements WindowListener{
 
 	public void init() {
 		jsonHandler = new JSONHandler();
-		jsonHandler.initilizeCardJSON();
+		jsonHandler.initilizeCardMap();
 
 		this.setSize(800, 600);
 		this.setLayout(new BorderLayout());
@@ -235,6 +235,10 @@ public class GUI extends JFrame implements WindowListener{
 
 	private SearchThread searchThread = new SearchThread();
 	private void updateSearch() {
+		if (resultNameVector==null) {
+			// initialization has not finished
+			return;
+		}
 		if (searchThread.isDone()) {
 			searchThread = new SearchThread();
 			searchThread.execute();
@@ -246,28 +250,25 @@ public class GUI extends JFrame implements WindowListener{
 		
 	}
 	
-	private class SearchThread extends SwingWorker<Void,Void> {
-		JSONObject resultJson;
+	private class SearchThread extends SwingWorker<Void,Vector<String>> {
+		
 		@Override
 		public Void doInBackground() {
 			String searchQuery = searchField.getText();
-			resultJson = jsonHandler.getSearchResultList(searchQuery);
-			resultNameVector.clear();
-			// repopulate result vector if the result had elements
-			if (resultJson.length() > 0)
-				for (String name : JSONObject.getNames(resultJson)) {
-					resultNameVector.addElement(name);
-				}
-			Collections.sort(resultNameVector);
+			Vector<String> resultVector = jsonHandler.getSearchResultList(searchQuery);
+			Collections.sort(resultVector);
+			publish (resultVector);
 			return null;
 		}
 		
 		@Override
-		public void done() {
+		protected void process(List<Vector< String>> result) {
+			resultNameVector.clear();
+			resultNameVector.addAll(result.get(result.size()-1));
 			resultList.updateUI();
 			selectedCardName = resultList.getSelectedValue();
 			updateCardInfo();
-		}
+		 }
 		
 	}
 
