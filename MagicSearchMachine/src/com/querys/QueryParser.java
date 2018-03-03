@@ -51,8 +51,8 @@ public class QueryParser {
 			queryToken = queryToken.substring(1);
 		}
 
-		// remove any quotation marks from the query token
-		queryToken = queryToken.replace("\"", "");
+		// remove any quotation marks from the query token and convert to lowercase
+		queryToken = queryToken.replace("\"", "").toLowerCase();
 
 		String[] commandSplit = queryToken.split(":");
 

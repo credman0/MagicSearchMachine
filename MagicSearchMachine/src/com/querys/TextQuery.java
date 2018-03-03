@@ -15,11 +15,11 @@ public class TextQuery extends SearchQuery {
 	@Override
 	public boolean matchesQuery(Card card) {
 		if (card.getText() != null) {
-			String testValue = value.toLowerCase().replaceAll("~", card.getName().toLowerCase());
+			String testValue = value.replaceAll("~", card.getName().toLowerCase());
 			if (positive)
-				return card.getText().toLowerCase().contains(testValue);
+				return card.getText().contains(testValue);
 			else
-				return !card.getText().toLowerCase().contains(testValue);
+				return !card.getText().contains(testValue);
 		} else {
 			/*
 			 * if we are a positive condition, then lacking the attribute means we return

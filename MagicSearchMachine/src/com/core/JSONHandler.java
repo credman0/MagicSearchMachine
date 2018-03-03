@@ -80,7 +80,7 @@ public class JSONHandler {
 				printingsJSON = cardObject.getJSONArray("printings");
 				printings = new String[printingsJSON.length()];
 				for (int i = 0; i < printingsJSON.length(); i++) {
-					printings[i] = printingsJSON.getString(i);
+					printings[i] = printingsJSON.getString(i).toLowerCase();
 				}
 			}
 
@@ -98,35 +98,35 @@ public class JSONHandler {
 
 			String cardType;
 			if (cardObject.has("type")) {
-				cardType = cardObject.getString("type");
+				cardType = cardObject.getString("type").toLowerCase();
 			} else {
 				cardType = null;
 			}
 
 			String cardText;
 			if (cardObject.has("text")) {
-				cardText = cardObject.getString("text");
+				cardText = cardObject.getString("text").toLowerCase();
 			} else {
 				cardText = null;
 			}
 
 			String power;
 			if (cardObject.has("power")) {
-				power = cardObject.getString("power");
+				power = cardObject.getString("power").toLowerCase();
 			} else {
 				power = "-1";
 			}
 
 			String toughness;
 			if (cardObject.has("toughness")) {
-				toughness = cardObject.getString("toughness");
+				toughness = cardObject.getString("toughness").toLowerCase();
 			} else {
 				toughness = "-1";
 			}
 
 			String manaCost;
 			if (cardObject.has("manaCost")) {
-				manaCost = cardObject.getString("manaCost");
+				manaCost = cardObject.getString("manaCost").toLowerCase();
 			} else {
 				manaCost = "";
 			}

@@ -16,9 +16,9 @@ public class NameQuery extends SearchQuery {
 	public boolean matchesQuery(Card card) {
 		if (card.getName() != null) {
 			if (positive)
-				return card.getName().toLowerCase().contains(value);
+				return card.getName().contains(value);
 			else
-				return !card.getName().toLowerCase().contains(value);
+				return !card.getName().contains(value);
 		} else {
 			/*
 			 * if we are a positive condition, then lacking the attribute means we return

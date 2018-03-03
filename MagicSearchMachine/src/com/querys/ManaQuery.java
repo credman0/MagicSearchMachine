@@ -3,9 +3,6 @@ package com.querys;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.core.Card;
 
 public class ManaQuery extends SearchQuery {

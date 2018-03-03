@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.core.Card;
 
 public class FormatQuery extends SearchQuery {
