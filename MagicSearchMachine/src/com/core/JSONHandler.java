@@ -151,12 +151,12 @@ public class JSONHandler {
 
 				legalities = new HashMap<String, Boolean>();
 				for (int i = 0; i < legalitiesJSON.length(); i++) {
-					legalities.put(legalitiesJSON.getJSONObject(i).getString("format"),
+					legalities.put(legalitiesJSON.getJSONObject(i).getString("format").toLowerCase(),
 							legalitiesJSON.getJSONObject(i).getString("legality").equals("Legal"));
 				}
 			}
 
-			Card card = new Card(cardName, cardObject.getInt("cmc"), power, toughness, cardType, cardText, printings,
+			Card card = new Card(cardName.toLowerCase(), cardObject.getInt("cmc"), power, toughness, cardType, cardText, printings,
 					colorIdentity, multiverseID, manaCost, legalities);
 			cards.put(cardName, card);
 		}

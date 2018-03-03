@@ -26,7 +26,7 @@ public class QueryParser {
 
 				while (scan.hasNextLine()) {
 					String cardName = scan.nextLine();
-					cardList.add(cardName);
+					cardList.add(cardName.toLowerCase());
 				}
 				
 				scan.close();
