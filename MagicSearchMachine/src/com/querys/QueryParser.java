@@ -113,8 +113,8 @@ public class QueryParser {
 				return new FormatQuery(commandSplit[1], positive, loadedFormats);
 			case "s":
 				return new PrintingsQuery(commandSplit[1], positive);
-			case "c":
-				return new ManaQuery(commandSplit[1], positive);
+			case "id":
+				return new IdentityQuery(commandSplit[1], positive);
 
 			default:
 				System.out.println("Unknown search command: " + commandSplit[0]);

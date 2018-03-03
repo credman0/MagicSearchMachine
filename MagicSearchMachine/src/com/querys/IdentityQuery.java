@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 import com.core.Card;
 
-public class ManaQuery extends SearchQuery {
+public class IdentityQuery extends SearchQuery {
 	
 	Character[] colors;
 	boolean positive;
@@ -34,7 +34,7 @@ public class ManaQuery extends SearchQuery {
 		
 	};
 
-	public ManaQuery(String value, boolean positive) {
+	public IdentityQuery(String value, boolean positive) {
 		// possibilitiy for multiple single letter colors
 		colors = new Character[value.length()];
 		for (int i  = 0; i < value.length(); i++) {

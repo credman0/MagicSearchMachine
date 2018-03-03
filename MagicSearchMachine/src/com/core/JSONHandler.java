@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.querys.ManaQuery;
+import com.querys.IdentityQuery;
 import com.querys.QueryParser;
 import com.querys.SearchQuery;
 
@@ -91,7 +91,7 @@ public class JSONHandler {
 				for (int i = 0; i < colorIdentity.length; i++) {
 					colorIdentity[i] = identityJson.getString(i).toLowerCase().charAt(0);
 				}
-				Arrays.sort(colorIdentity, ManaQuery.ORDER_COMPARATOR);
+				Arrays.sort(colorIdentity, IdentityQuery.ORDER_COMPARATOR);
 			} else {
 				colorIdentity = new Character[] { 'c' };
 			}
