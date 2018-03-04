@@ -1,4 +1,4 @@
-package com.querys;
+package com.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,6 +8,18 @@ import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.querys.CMCQuery;
+import com.querys.FormatQuery;
+import com.querys.IdentityQuery;
+import com.querys.ManaQuery;
+import com.querys.NameQuery;
+import com.querys.PowerQuery;
+import com.querys.PrintingsQuery;
+import com.querys.SearchQuery;
+import com.querys.TextQuery;
+import com.querys.ToughnessQuery;
+import com.querys.TypeQuery;
 
 public class QueryParser {
 	private Hashtable<String, String[]> loadedFormats = new Hashtable<String, String[]>();
@@ -115,6 +127,8 @@ public class QueryParser {
 				return new PrintingsQuery(commandSplit[1], positive);
 			case "id":
 				return new IdentityQuery(commandSplit[1], positive);
+			case "m":
+				return new ManaQuery(commandSplit[1], positive);
 
 			default:
 				System.out.println("Unknown search command: " + commandSplit[0]);

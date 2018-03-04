@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.querys.IdentityQuery;
-import com.querys.QueryParser;
 import com.querys.SearchQuery;
 
 public class JSONHandler {
@@ -126,7 +125,19 @@ public class JSONHandler {
 
 			String manaCost;
 			if (cardObject.has("manaCost")) {
-				manaCost = cardObject.getString("manaCost").toLowerCase();
+				manaCost = cardObject.getString("manaCost").toLowerCase().replaceAll("\\{|\\}", "");
+				
+				// we do all this so we can sort with a custom comparator
+				Character[] costArray = new Character[manaCost.length()];
+				for (int i  = 0; i < manaCost.length(); i++) {
+					costArray[i] = manaCost.charAt(i);
+				}
+				Arrays.sort(costArray, IdentityQuery.ORDER_COMPARATOR);
+				char[] cCostArray = new char[costArray.length];
+				for (int i  = 0; i < costArray.length; i++) {
+					cCostArray[i] = costArray[i];
+				}
+				manaCost = new String(cCostArray);
 			} else {
 				manaCost = "";
 			}
